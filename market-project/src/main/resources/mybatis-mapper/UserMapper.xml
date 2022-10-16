@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="market.marketproject.mapper.UserMapper">
+
+<!--회원가입-->
+    <insert id="registerUser" parameterType="market.marketproject.dto.User">
+        INSERT INTO user
+        (
+            user_uuid,
+            user_name,
+            user_email,
+            user_password,
+            user_birth,
+            user_tel
+        )
+        VALUES
+            (
+                #{userUuid},
+                #{userName},
+                #{userEmail},
+                #{userPassword},
+                #{userBirth},
+                #{userTel}
+            )
+    </insert>
+
+<!--이메일, 패스워드 확인-->
+    <select id="checkEmailPasswordExists"  parameterType="market.marketproject.dto.User" resultType="java.lang.Integer">
+        SELECT if(count(user_email) = 1, 1, 0)
+        FROM user
+        WHERE
+            user_email = #{userEmail} AND user_password = #{userPassword}
+    </select>
+
+<!--이메일 중복 확인-->
+    <select id="checkEmailExists"  parameterType="market.marketproject.dto.User" resultType="java.lang.Integer">
+        SELECT if(count(user_email) = 1, 1, 0)
+        FROM user
+        WHERE
+            user_email = #{userEmail}
+    </select>
+
+<!--이름, 생일 중복 확인-->
+    <select id="checkNameExists"  parameterType="market.marketproject.dto.User" resultType="java.lang.Integer">
+        SELECT if(count(user_name) = 1, 1, 0)
+        FROM user
+        WHERE
+            user_name = #{userName} AND user_birth = #{userBirth}
+    </select>
+
+<!--이메일을 통해 사용자 정보 받아오기-->
+    <select id="getUserByUserEmail" parameterType="market.marketproject.dto.User" resultType="market.marketproject.dto.User">
+
+        SELECT
+            user_uuid,
+            user_name,
+            user_email,
+            user_password,
+            user_birth
+        FROM
+            user
+        WHERE
+            user_email = #{userEmail}
+
+    </select>
+
+<!--이메일 찾기-->
+    <select id="findEmail" parameterType="market.marketproject.dto.User" resultType="java.lang.String">
+        SELECT
+            user_email
+        FROM
+            user
+        WHERE
+            user_name = #{userName} AND user_birth = #{userBirth}
+    </select>
+
+    <select id="findPassword" parameterType="market.marketproject.dto.User" resultType="java.lang.String">
+        SELECT
+            user_password
+        FROM
+            user
+        WHERE
+            user_email = #{userEmail}
+    </select>
+
+    <update id="updateMailAuth" parameterType="market.marketproject.dto.User">
+        UPDATE user
+        SET mail_auth = 1
+        WHERE user_email = #{userEmail}
+    </update>
+
+    <select id="emailAuthFail" parameterType="String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM user
+        WHERE user_email = #{userEmail} AND mail_auth = 1
+    </select>
+
+</mapper>

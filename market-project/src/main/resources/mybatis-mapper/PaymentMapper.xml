@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="market.marketproject.mapper.PaymentMapper">
+
+    <resultMap id="myCart" type="market.marketproject.dto.JOIN_Cart_Product_User">
+        <result column="product_uuid" property="productUuid"/>
+        <result column="product_count" property="productCount"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product name" property="productNmae"/>
+        <result column="cart_product_count" property="cartProductCount"/>
+        <result column="user_uuid" property="userUuid"/>
+        <result column="seller_uuid" property="sellerUuid"/>
+    </resultMap>
+
+    <resultMap id="payment" type="market.marketproject.dto.PaymentDto">
+        <result column="product_name" property="productName"/>
+        <result column="buyer_name" property="buyerName"/>
+        <result column="buyer_email" property="buyerEmail"/>
+        <result column="buyer_tel" property="buyerTel"/>
+        <result column="buyer_uuid" property="buyerUuid"/>
+        <result column="order_amount" property="orderAmount"/>
+        <result column="all_product_uuids" property="allProductUuids"/>
+    </resultMap>
+<!--사-->
+    <select id="loadInfo" parameterType="market.marketproject.dto.JOIN_Cart_Product_User" resultMap="myCart">
+        SELECT
+            c.user_uuid,
+            c.product_uuid,
+            c.cart_product_count,
+            u.user_name,
+            u.user_tel,
+            u.user_email,
+            p.product_name,
+            p.product_count,
+            p.product_price,
+            p.seller_uuid
+
+        FROM (SELECT * FROM cart WHERE user_uuid = #{userUuid}) as c
+                 INNER JOIN product as p
+                            ON c.product_uuid = p.product_uuid
+                 INNER JOIN user as u
+                            ON c.user_uuid = u.user_uuid
+        WHERE c.user_uuid = #{userUuid} AND c.product_uuid = #{productUuid}
+    </select>
+
+    <update id="updateProductCount" parameterType="market.marketproject.dto.JOIN_Cart_Product_User">
+        UPDATE product
+        SET product_count = (SELECT
+                                 p.product_count - c.cart_product_count
+                             FROM (SELECT * FROM cart WHERE user_uuid = #{userUuid}) as c
+                                 INNER JOIN product as p ON c.product_uuid = p.product_uuid
+                             WHERE c.product_uuid = #{productUuid})
+        WHERE product_uuid = #{productUuid}
+    </update>
+
+    <delete id="deleteCartList">
+        DELETE
+        FROM cart
+        WHERE product_uuid = #{productUuid} AND user_uuid = #{userUuid}
+    </delete>
+
+    <insert id="paymentParam" parameterType="market.marketproject.dto.JOIN_Cart_Product_User">
+        INSERT INTO payment
+        (
+            product_name,
+            buyer_email,
+            buyer_name,
+            buyer_tel,
+            order_amount,
+            all_product_uuids,
+            buyer_uuid
+        )
+        VALUES
+        (
+            #{productName},
+            #{userEmail},
+            #{userName},
+            #{userTel},
+            #{orderAmount},
+            #{allProductUuids},
+            #{userUuid}
+        )
+    </insert>
+
+    <select id="loadPaymentParam" parameterType="market.marketproject.dto.PaymentDto" resultMap="payment">
+        SELECT *
+        FROM payment
+        WHERE buyer_uuid = #{buyerUuid}
+    </select>
+
+    <delete id="deleteOrderList">
+        DELETE
+        FROM payment
+        WHERE buyer_uuid = #{userUuid};
+    </delete>
+
+    <select id="checkOrderExists"  parameterType="market.marketproject.dto.JOIN_Cart_Product_User" resultType="java.lang.Integer">
+        SELECT if(count(buyer_uuid) = 1, 1, 0)
+        FROM payment
+        WHERE
+            buyer_uuid = #{userUuid}
+    </select>
+</mapper>

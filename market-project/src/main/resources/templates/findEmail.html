@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+
+  <title>아이디 찾기</title>
+</head>
+<body>
+아이디 찾기
+
+<form th:if = "${session.user_email == null}" method="post" action="/findEmail.do">
+  이름 :<input type="text" name="userName"><br>
+  BIRTH :<input type="date" name="userBirth"><br>
+  <button type="submit">제출</button>
+</form>
+<form th:if = "${session.user_email != null}" method="post" action="/home">
+  <p th:text="${session.user_name} + '님의 이메일은 ' + ${session.user_email} + '입니다.'"}></p>
+  <button type="submit">처음으로</button>
+</form>
+</body>
+</html>

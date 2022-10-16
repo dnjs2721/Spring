@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="market.marketproject.mapper.CartMapper">
+    <insert id="addCart" parameterType="market.marketproject.dto.Cart">
+        INSERT INTO cart
+        (
+         user_uuid,
+         product_uuid,
+         cart_product_count
+        )
+        VALUES
+            (
+                #{userUuid},
+                #{productUuid},
+                #{cartProductCount}
+            )
+    </insert>
+
+    <select id="loadCart" parameterType="market.marketproject.dto.Cart" resultType="market.marketproject.dto.Cart">
+        SELECT
+            user_uuid,
+            product_uuid,
+            cart_product_count
+        FROM
+            cart
+        WHERE
+            user_uuid = #{userUuid}
+    </select>
+</mapper>
