@@ -22,18 +22,21 @@ public class ServePaymentController {
         this.paymentService = paymentService;
     }
 
+    /* Cart, User, Product 정보 조합 */
     @PostMapping("/buy/loadInfo")
     public ResponseEntity loadInfo(@RequestBody JOIN_Cart_Product_User joinCartProductUser){
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.loadInfo(joinCartProductUser));
     }
 
+    /* 주문 리스트 만들기 */
     @PostMapping("/orderList")
     public ResponseEntity buyProcess(@RequestBody JOIN_Cart_Product_User joinCartProductUser){
         return ResponseEntity.status(HttpStatus.OK).body(paymentService.makeOrderList(joinCartProductUser));
     }
 
-    @PostMapping("/payment")
-    public ResponseEntity payment(@RequestBody JOIN_Cart_Product_User joinCartProductUser){
-        return ResponseEntity.status(HttpStatus.OK).body(paymentService.payment(joinCartProductUser));
-    }
+//    /* */
+//    @PostMapping("/payment")
+//    public ResponseEntity payment(@RequestBody JOIN_Cart_Product_User joinCartProductUser){
+//        return ResponseEntity.status(HttpStatus.OK).body(paymentService.payment(joinCartProductUser));
+//    }
 }

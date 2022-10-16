@@ -35,6 +35,7 @@ public class PaymentController {
         this.paymentMapper = paymentMapper;
     }
 
+    /* 결제 페이지 불러오기*/
     @PostMapping(value = "/payment")
     public String iamport(Model model, PaymentDto paymentDto, HttpServletRequest request){
         try {
@@ -45,6 +46,7 @@ public class PaymentController {
         }
     }
 
+    /* 결제 검증 */
     @ResponseBody
     @RequestMapping(value = "/verifyIamport/{imp_uid}")
     public IamportResponse<Payment> paymentByImUid(
@@ -54,6 +56,7 @@ public class PaymentController {
         return api.paymentByImpUid(imp_uid);
     }
 
+    /* 결제 후 동작 */
     @RequestMapping(value = "paymentStat.do", method = {RequestMethod.POST})
     public ResponseEntity paymentStat(@RequestParam("Status") String Status,
                             @RequestParam("buyer_uuid") String buyer_uuid,

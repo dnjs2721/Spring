@@ -8,6 +8,5 @@ import java.util.List;
 @Mapper
 public interface CartMapper {
     void addCart(Cart cart);
-
     List<Cart> loadCart(Cart cart);
 }

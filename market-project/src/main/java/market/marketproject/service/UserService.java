@@ -103,7 +103,6 @@ public class UserService {
     }
 
     // 로그인
-    // return 값으로 uuid 반환
     public int login(User user, HttpServletRequest request) {
         /* 이메일, 패스워드 체크 */
         if (userMapper.checkEmailPasswordExists(user) == 1 && userMapper.emailAuthFail(user) == 1) {

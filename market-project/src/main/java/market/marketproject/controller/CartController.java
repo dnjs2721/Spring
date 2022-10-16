@@ -22,11 +22,13 @@ public class CartController {
         this.cartService = cartService;
     }
 
+    /* 장바구니 추가 */
     @PostMapping("/cart/add")
     public ResponseEntity addCart(@RequestBody Cart cart){
         return ResponseEntity.status(HttpStatus.OK).body(cartService.addCart(cart));
     }
 
+    /* 장바구니 조회 */
     @PostMapping("/cart/load")
     public ResponseEntity loadCart(@RequestBody Cart cart){
         return ResponseEntity.status(HttpStatus.OK).body(cartService.loadCart(cart));

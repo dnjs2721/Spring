@@ -27,33 +27,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-//
-//
-//    @PostMapping("/getUser")
-//    public List<User> getUserByUserEmail(@RequestBody User user){
-//        return userService.getUserByUserEmail(user);
-//    }
 
-//    @PostMapping("/findEmail")
-//    public ResponseEntity findEmail(@RequestBody User user){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.findEmail(user));
-//    }
-
-//    @PostMapping("/findPassword")
-//    public ResponseEntity findPassword(@RequestBody User user){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.findPassword(user));
-//    }
-
-//    @PostMapping("/sendEmail")
-//    public ResponseEntity sendEmail(@RequestBody User user) throws  Exception{
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.sendEmail(user));
-//    }
-
-//    @PostMapping("/certificationEmail")
-//    public ResponseEntity certificationEmail(@RequestBody User user){
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.certificationEmail(user));
-//    }
-
+    /* 메인 홈 */
     @GetMapping(value = "/home")
     public String home(HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession();
@@ -68,6 +43,7 @@ public class UserController {
         return "redirect:/home";
     }
 
+    /* 회원가입 */
     @RequestMapping("/register")
     public String register(){
         return "register";
@@ -78,6 +54,7 @@ public class UserController {
         return "redirect:/home";
     }
 
+    /* 로그인 */
     @RequestMapping("/login")
     public String login() {
         return "login";
@@ -93,6 +70,7 @@ public class UserController {
         return "redirect:/login";
     }
 
+    /* 로그아웃*/
     @PostMapping("/logout")
     public String logout(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -101,6 +79,7 @@ public class UserController {
         return "redirect:/home";
     }
 
+    /* 아이디 찾기*/
     @RequestMapping("/findEmail")
     public String findEmail(){
         return "findEmail";
@@ -113,6 +92,7 @@ public class UserController {
         return "redirect:/home";
     }
 
+    /* 비밀번호 찾기 */
     @RequestMapping("/findPassword")
     public String findPassword(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -127,6 +107,7 @@ public class UserController {
         return "redirect:/home";
     }
 
+    /* 이메일 인증*/
     @RequestMapping("/certificationEmail")
     public String certificationEmail(){
         return "certificationEmail";

@@ -28,7 +28,7 @@ public class PaymentService {
         this.paymentMapper = paymentMapper;
     }
 
-    /* cart, product 정보 조합 */
+    /* Cart, User, Product 정보 조합 */
     public ArrayList<HashMap<String, String>> loadInfo(JOIN_Cart_Product_User joinCartProductUser){
         List<String> productUuids = joinCartProductUser.getProductUuids();
         int selectedNum = productUuids.size();
@@ -133,7 +133,7 @@ public class PaymentService {
         model.addAttribute("ProductUuids", param.get(0).getAllProductUuids());
     }
 
-    /* 결제 */
+    /* 결제 후 cart, product 정보 수정 */
     public ResponseEntity payment (JOIN_Cart_Product_User joinCartProductUser){
         try{
             String[] splitStr = joinCartProductUser.getProductUuid().split(",");

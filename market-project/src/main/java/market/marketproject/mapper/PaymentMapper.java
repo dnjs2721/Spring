@@ -14,7 +14,6 @@ public interface PaymentMapper {
     void paymentParam(JOIN_Cart_Product_User joinCartProductUser);
     List<PaymentDto> loadPaymentParam(PaymentDto paymentDto);
     void deleteOrderList(JOIN_Cart_Product_User joinCartProductUser);
-
     Integer checkOrderExists(JOIN_Cart_Product_User joinCartProductUser);
 
 }
