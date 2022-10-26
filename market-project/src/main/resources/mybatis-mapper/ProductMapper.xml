@@ -10,7 +10,10 @@
             seller_uuid,
             product_name,
             product_count,
-            product_price
+            product_price,
+            big_category,
+            middle_category,
+            small_category
         )
         VALUES
             (
@@ -18,7 +21,10 @@
                 #{sellerUuid},
                 #{productName},
                 #{productCount},
-                #{productPrice}
+                #{productPrice},
+                #{bigCategory},
+                #{middleCategory},
+                #{smallCategory}
             )
     </insert>
 
@@ -29,7 +35,10 @@
             product_name,
             product_uuid,
             product_count,
-            product_price
+            product_price,
+            big_category,
+            middle_category,
+            small_category
         FROM
             product
         where

@@ -9,4 +9,7 @@ public class Product {
     private String productName;
     private Integer productCount;
     private Integer productPrice;
+    private String bigCategory;
+    private String middleCategory;
+    private String smallCategory;
 }

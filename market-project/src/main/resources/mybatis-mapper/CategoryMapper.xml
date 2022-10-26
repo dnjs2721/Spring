@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="market.marketproject.mapper.CategoryMapper">
+
+    <resultMap id="myCategory" type="market.marketproject.dto.Category">
+        <result column="n_key" property="nKey"/>
+        <result column="category_NM" property="categoryNm"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="navigator" property="navigator"/>
+    </resultMap>
+
+    <resultMap id="myCategory2" type="market.marketproject.dto.Category">
+        <result column="group_id" property="groupId"/>
+        <result column="category_lev" property="categoryLev"/>
+        <result column="category_nm" property="categoryNm"/>
+        <result column="category_detail_lev" property="categoryDetailLev"/>
+        <result column="category_detail_nm" property="categoryDetailNm"/>
+        <result column="category_parent_lev" property="categoryParentLev"/>
+        <result column="category_detail_parent_lev" property="categoryDetailParentLev"/>
+    </resultMap>
+
+    <select id="loadCategory" parameterType="market.marketproject.dto.Category" resultMap="myCategory">
+        SELECT
+            CONCAT(A.group_ID,  A.category_LEV,  A.category_detail_LEV) AS n_key,
+            A.category_NM,
+            CONCAT(repeat(' ',A.category_parent_LEV * 3), A.category_detail_NM) as category_name,
+            CASE A.category_parent_LEV
+                WHEN 0 THEN C.category_detail_NM
+                WHEN 1 THEN CONCAT(B.category_detail_NM,' > ', A.category_detail_NM)
+                WHEN 2 THEN CONCAT(C.category_detail_NM, ' > ', B.category_detail_NM,' > ', A.category_detail_NM)
+                END as navigator
+        FROM category A LEFT JOIN category B
+                                  ON A.category_parent_LEV = B.category_LEV
+                                      AND A.category_detail_parent_LEV = B.category_detail_LEV
+                        LEFT JOIN category C
+                                  ON A.group_ID = C.group_ID
+        WHERE A.category_ID > 0
+          AND C.category_id = ( SELECT category_id FROM category sub2 where  category_ID > 0 and category_LEV = 1)
+        ORDER BY navigator;
+
+    </select>
+
+    <insert id="addCategory" parameterType="market.marketproject.dto.Category">
+        INSERT INTO category
+        (
+            group_id,
+            category_lev,
+            category_nm,
+            category_detail_lev,
+            category_detail_nm,
+            category_parent_lev,
+            category_detail_parent_lev
+        )
+        VAlUES
+        (
+            #{groupId},
+            #{categoryLev},
+            #{categoryNm},
+            #{categoryDetailLev},
+            #{categoryDetailNm},
+            #{categoryParentLev},
+            #{categoryDetailParentLev}
+        )
+    </insert>
+    <delete id="deleteCategory">
+        DELETE
+        FROM
+            category
+        WHERE
+            category_detail_nm = #{categoryDetailNm}
+    </delete>
+
+</mapper>
