@@ -13,7 +13,8 @@
             product_price,
             big_category,
             middle_category,
-            small_category
+            small_category,
+            idx
         )
         VALUES
             (
@@ -24,7 +25,8 @@
                 #{productPrice},
                 #{bigCategory},
                 #{middleCategory},
-                #{smallCategory}
+                #{smallCategory},
+                #{idx}
             )
     </insert>
 
@@ -43,6 +45,48 @@
             product
         where
             seller_uuid = #{sellerUuid}
+    </select>
+
+    <select id="productOfCategory" parameterType="market.marketproject.dto.Product" resultType="market.marketproject.dto.Product">
+        SELECT
+            product_uuid,
+            seller_uuid,
+            product_name,
+            product_uuid,
+            product_count,
+            product_price,
+            big_category,
+            middle_category,
+            small_category
+        FROM
+            product
+        WHERE
+            small_category = #{smallCategory} OR middle_category = #{middleCategory} OR big_category = #{bigCategory}
+    </select>
+
+    <select id="allProduct" parameterType="market.marketproject.dto.Product" resultType="market.marketproject.dto.Product">
+        SELECT
+            product_uuid,
+            seller_uuid,
+            product_name,
+            product_uuid,
+            product_count,
+            product_price,
+            big_category,
+            middle_category,
+            small_category
+        FROM
+            product
+        ORDER BY
+            idx ASC
+        LIMIT #{offset}, #{recordSize}
+    </select>
+
+    <select id="count" parameterType="market.marketproject.dto.Product" resultType= "java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            product
     </select>
     
     <delete id="deleteProduct">

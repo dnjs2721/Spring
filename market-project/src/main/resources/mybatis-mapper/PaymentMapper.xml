@@ -7,7 +7,7 @@
         <result column="product_uuid" property="productUuid"/>
         <result column="product_count" property="productCount"/>
         <result column="product_price" property="productPrice"/>
-        <result column="product name" property="productNmae"/>
+        <result column="product_name" property="productName"/>
         <result column="cart_product_count" property="cartProductCount"/>
         <result column="user_uuid" property="userUuid"/>
         <result column="seller_uuid" property="sellerUuid"/>

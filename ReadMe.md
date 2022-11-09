@@ -16,6 +16,9 @@ Spring, MariaDB, Mybatis, Thymeleaf
 + 상품
   + 판매 상품 등록
   + 판매 상품 조회
+    + 카테고리
+    + 판매자
+    + 전체(페이지네이션)
   + 판매 상품 삭제
   + 카테고리 DB 구현(대,중,소 계층)
     + 판매 상품 등록시 카테고리 선택(대,중,소)
@@ -26,4 +29,4 @@ Spring, MariaDB, Mybatis, Thymeleaf
 
 + 결제
   + 주문리스트 생성
-  + 결제(아임포트, View)
+  + 결제(아임포트, JS)

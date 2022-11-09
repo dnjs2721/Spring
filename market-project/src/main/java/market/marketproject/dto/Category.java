@@ -1,8 +1,10 @@
 package market.marketproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Category {
     private String groupId;
     private Integer categoryLev;

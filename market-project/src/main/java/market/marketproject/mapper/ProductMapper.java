@@ -11,4 +11,10 @@ public interface ProductMapper {
     void registerProduct(Product product);
     void deleteProduct(Product product);
     List<Product> productOfSeller(Product product);
+
+    List<Product> productOfCategory(Product product);
+
+    List<Product> allProduct(Product product);
+
+    Integer count(Product product);
 }

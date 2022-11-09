@@ -37,6 +37,17 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.productOfSeller(product));
     }
 
+    /* 카테고리를 통한 상품 조회*/
+    @PostMapping("/search/itemCategory")
+    public List<Product> productOfCategory(@RequestBody Product product){
+        return productService.productOfCategory(product);
+    }
+
+    @PostMapping("/allItem")
+    public List<Product> allProduct(@RequestBody Product product){
+        return productService.allProduct((product));
+    }
+
     /* 판매 상품 삭제 */
     @PostMapping("/delete/item")
     public ResponseEntity deleteProduct(@RequestBody Product product){
