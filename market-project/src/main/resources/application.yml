@@ -4,7 +4,9 @@ spring:
 #    url: jdbc:mariadb://192.168.0.104:3306/product_project
     url: jdbc:mariadb://172.20.10.2:3306/product_project
     username: root
-    password: 1012
+    password: 101
+
+
 
 mybatis:
   type-aliases-package: com.example.mappertut.model
@@ -14,3 +16,8 @@ mybatis:
 redis:
   host: localhost
   port: 6379
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+

@@ -12,6 +12,12 @@ Spring, MariaDB, Mybatis, Thymeleaf
   + 이메일 인증(Redis, JavaMailSender)
   + 아이디 찾기
   + 비밀번호 찾기
+
++ Jwt
+  + 로그인
+  + 회원가입
+  + 순환참보(bean) 발생..
+    + JwtUserDetailService 분리 -> 해결
   
 + 상품
   + 판매 상품 등록
