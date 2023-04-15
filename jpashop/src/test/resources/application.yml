@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jpashop?serverTimezone=Asia/Seoul
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+# 테스트에 yml 파일 존재시 기존 yml 설정은 무시한다.
+# datasource 설정이 없으면 기본적으로 메모리 DB를 사용하며 driver-class 도 현재 등록된 라이브러리를 보고 찾아준다.
+# 추가로 ddl-auto 도 create-drop 모드로 동작한다.
+# 따라서 db 와 jpa 설정을 따로 할 필요가 없다. mysql 은 메모리 db를 지원하지 않는다.
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace # SpringBoot 3.x, hibernate6

@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jakarta.persistence.*;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +30,24 @@ public abstract class Item {
     private List<Category> categories = new ArrayList<>();
 
     //==연관관계 편의 메서드==//
-
     public void addCategory(Category category) {
         this.categories.add(category);
         category.getItems().add(this);
+    }
+
+    //==비즈니스 로직==//
+
+    /** 재고 증가 */
+    public void addStock(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
+    /** 재고 감소 */
+    public void removeStock(int quantity) {
+        int restStock = this.stockQuantity = quantity;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("재고 부족");
+        }
+        this.stockQuantity = restStock;
     }
 }
