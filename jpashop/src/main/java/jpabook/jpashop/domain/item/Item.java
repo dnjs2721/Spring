@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jakarta.persistence.*;
+import jpabook.jpashop.controller.dto.UpdateItemDto;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,5 +50,12 @@ public abstract class Item {
             throw new NotEnoughStockException("재고 부족");
         }
         this.stockQuantity = restStock;
+    }
+
+    /** 수정 */
+    public void changeItem(UpdateItemDto dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+        this.stockQuantity = dto.getStockQuantity();
     }
 }
