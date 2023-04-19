@@ -1,5 +1,7 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.api.dto.UpdateMemberRequestDto;
+import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,17 @@ public class MemberService {
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
+    }
+
+    /**
+     * 회원 수정
+     */
+    @Transactional
+    public void update(Long id, UpdateMemberRequestDto request) {
+        Member member = memberRepository.findOne(id);
+
+        member.setName(request.getName());
+        member.setAddress(new Address(request.getCity(), request.getStreet(), request.getZipcode()));
     }
 
     // 회원 전체 조회
