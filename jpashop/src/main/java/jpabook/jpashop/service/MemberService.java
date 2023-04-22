@@ -1,6 +1,6 @@
 package jpabook.jpashop.service;
 
-import jpabook.jpashop.api.dto.UpdateMemberRequestDto;
+import jpabook.jpashop.service.dto.UpdateMemberRequestDto;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;

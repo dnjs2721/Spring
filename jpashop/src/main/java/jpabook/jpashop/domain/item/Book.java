@@ -2,7 +2,7 @@ package jpabook.jpashop.domain.item;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jpabook.jpashop.controller.dto.UpdateItemDto;
+import jpabook.jpashop.domain.dto.UpdateItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

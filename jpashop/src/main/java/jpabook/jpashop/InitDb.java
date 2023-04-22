@@ -6,6 +6,7 @@ import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.delivery.Delivery;
 import jpabook.jpashop.domain.item.Book;
+import jpabook.jpashop.domain.item.Category;
 import jpabook.jpashop.domain.order.Order;
 import jpabook.jpashop.domain.order.OrderItem;
 import lombok.RequiredArgsConstructor;
@@ -61,10 +62,20 @@ public class InitDb {
             Member member = createMember("userB", "진주", "2", "22222");
             em.persist(member);
 
+            Category category = new Category();
+            category.setName("book");
+            Category category1 = new Category();
+            category1.setName("study");
+            em.persist(category);
+            em.persist(category1);
+
             Book book1 = createBook("SPRING1 BOOK", 20000, 200);
+            book1.addCategory(category);
             em.persist(book1);
 
             Book book2 = createBook("SPRING2 BOOK", 40000, 300);
+            book2.addCategory(category);
+            book2.addCategory(category1);
             em.persist(book2);
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);

@@ -2,7 +2,7 @@ package jpabook.jpashop.api;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jpabook.jpashop.api.dto.UpdateMemberRequestDto;
+import jpabook.jpashop.service.dto.UpdateMemberRequestDto;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;

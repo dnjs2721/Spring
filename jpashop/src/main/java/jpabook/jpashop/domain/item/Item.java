@@ -1,7 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jakarta.persistence.*;
-import jpabook.jpashop.controller.dto.UpdateItemDto;
+import jpabook.jpashop.domain.dto.UpdateItemDto;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.AllArgsConstructor;
 import lombok.Data;

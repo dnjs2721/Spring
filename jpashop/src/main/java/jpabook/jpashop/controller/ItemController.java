@@ -3,7 +3,7 @@ package jpabook.jpashop.controller;
 import jpabook.jpashop.controller.form.BookForm;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
-import jpabook.jpashop.controller.dto.UpdateItemDto;
+import jpabook.jpashop.domain.dto.UpdateItemDto;
 import jpabook.jpashop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
