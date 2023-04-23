@@ -42,7 +42,7 @@ public class MemberService {
      */
     @Transactional
     public void update(Long id, UpdateMemberRequestDto request) {
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findById(id).get();
 
         member.setName(request.getName());
         member.setAddress(new Address(request.getCity(), request.getStreet(), request.getZipcode()));
@@ -54,7 +54,7 @@ public class MemberService {
     }
 
     public Member findOne(Long memberId) {
-        return memberRepository.findOne(memberId);
+        return memberRepository.findById(memberId).get();
     }
 
 }
