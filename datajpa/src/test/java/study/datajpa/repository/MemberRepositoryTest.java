@@ -252,21 +252,40 @@ class MemberRepositoryTest {
         Team teamB = teamRepository.save(new Team("teamB"));
 
         Member memberA = memberRepository.save(new Member("memberA", 10, teamA));
-        Member memberB = memberRepository.save(new Member("memberB", 10, teamB));
+        Member memberB = memberRepository.save(new Member("memberA", 10, teamB));
 
         em.flush();
         em.clear();
 
         //when
         // 멤버만 가지고 오고 팀은 프록시 객체로 가지고 온다.
-        List<Member> members = memberRepository.findAll();
+//        List<Member> members = memberRepository.findAll();
+        List<Member> members = memberRepository.findEntityGraphByUserName("memberA");
 
         //then
         for (Member member : members) {
             System.out.println("member = " + member);
             // 팀을 호출 하는 순간 sql 이 나간다. 프록시 초기화 (N + 1 문제)
+            // fetch 조인으로 해결
             System.out.println("member.getTeam().getTeamName() = " + member.getTeam().getTeamName());
         }
+    }
+
+    @Test
+    public void queryHint() throws Exception {
+        //given
+        Member member1 = new Member("member1, 10");
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findById(member1.getMemberId()).get();
+        findMember.setUserName("member2");
+
+        em.flush(); // Update Query 실행X
+
+        //then
 
     }
 }

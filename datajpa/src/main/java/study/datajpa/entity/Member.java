@@ -11,6 +11,7 @@ import lombok.*;
         name = "Member.findByUserName",
         query = "select m from Member m where m.userName = :username"
 ) // 사용할 일 잘 없음
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
