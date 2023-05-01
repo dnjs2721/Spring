@@ -274,18 +274,124 @@ class MemberRepositoryTest {
     @Test
     public void queryHint() throws Exception {
         //given
-        Member member1 = new Member("member1, 10");
+        Member member1 = new Member("member1", 10);
         memberRepository.save(member1);
         em.flush();
         em.clear();
 
         //when
-        Member findMember = memberRepository.findById(member1.getMemberId()).get();
+        Member findMember = memberRepository.findReadOnlyByUserName("member1");
         findMember.setUserName("member2");
 
+        //then
         em.flush(); // Update Query 실행X
+    }
+
+    @Test
+    public void lock() throws Exception {
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> result = memberRepository.findLockByUserName("member1");
+    }
+
+    @Test
+    public void callCustom() throws Exception {
+        //given
+        List<Member> memberCustom = memberRepository.findMemberCustom();
+        //when
+        for (Member member : memberCustom) {
+            System.out.println("member = " + member);
+        }
+        //then
+    }
+
+    @Test
+    public void projection() throws Exception {
+        //given
+        Team team = new Team("teamA");
+        em.persist(team);
+
+        Member m1 = new Member("m1", 0, team);
+        Member m2 = new Member("m2", 0, team);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        //when
+        /**
+         * Projection
+         * SQL 에서도 select 절에서 userName 만 조회 하는 것을 확인
+         */
+//        List<UsernameOnly> result = memberRepository.findProjectionByUserName("m1");
+//        for (UsernameOnly usernameOnly : result) {
+//            System.out.println("usernameOnly = " + usernameOnly);
+//        }
+
+        /**
+         * Projection
+         * 클래스 기반 Projection
+         */
+//        List<UserNameOnlyDto> result2 = memberRepository.findProjection2ByUserName("m1");
+//        for (UserNameOnlyDto userNameOnlyDto : result2) {
+//            System.out.println("userNameOnlyDto = " + userNameOnlyDto);
+//        }
+
+        /**
+         * 동적 Projection
+         */
+//        List<UserNameOnlyDto> result3 = memberRepository.findProjection3ByUserName("m1", UserNameOnlyDto.class);
+//        for (UserNameOnlyDto userNameOnlyDto : result3) {
+//            System.out.println("userNameOnlyDto = " + userNameOnlyDto);
+//        }
+
+        /**
+         * Projection
+         * 중첩 구조 처리
+         * Team 은 최적화가 되지 않고 엔티티를 불러온다.
+         * 프로젝션 대상이 root 엔티티면, JPQL SELECT 절 최적화 가능
+         * 프로젝션 대상이 ROOT 가 아니면
+         *  - LEFT OUTER JOIN 처리
+         *  - 모든 필드를 SELECT 해서 엔티티로 조회한 다음에 계산
+         */
+        List<NestedClosedProjection> result4 = memberRepository.findProjection3ByUserName("m1", NestedClosedProjection.class);
+        for (NestedClosedProjection nestedClosedProjection : result4) {
+            System.out.println("nestedClosedProjection = " + nestedClosedProjection);
+        }
 
         //then
+
+    }
+
+    @Test
+    public void nativeQuery() throws Exception {
+        //given
+        Team team = new Team("teamA");
+        em.persist(team);
+
+        Member m1 = new Member("m1", 0, team);
+        Member m2 = new Member("m2", 0, team);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        Member result = memberRepository.findByNativeQuery("m1");
+        System.out.println("result = " + result);
+
+        Page<MemberProjection> result2 = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = result2.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection.getUserName() = " + memberProjection.getUserName());
+            System.out.println("memberProjection.getTeamName() = " + memberProjection.getTeamName());
+        }
 
     }
 }

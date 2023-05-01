@@ -1,13 +1,11 @@
 package study.datajpa.repository;
 
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -16,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     /**
      * 많이 쓰는 방식 1
@@ -109,6 +107,55 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 //    @EntityGraph("Member.all") // NamedEntityGraph
     List<Member> findEntityGraphByUserName(@Param("username") String username);
 
-    @QueryHint(name = "org.hibenate.readOnly")
+    // JPA 쿼리 힌트 (SQL 힌트가 아니라 JPA 구현체에게 제공하는 힌트)
+    @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
+    Member findReadOnlyByUserName(String username);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findLockByUserName(String username);
+
+    /**
+     * Projections
+     * 엔티티 대신에 DTO 를 편리하게 조회할 때 사용
+     * 전체 엔티티가 아니라 만약 회원 이름만 딱 조회하고 싶을때
+     * 메서드 이름은 자유, 반환 타입으로 인지
+     */
+    List<UsernameOnly>findProjectionByUserName(String username);
+
+    /**
+    * 클래스 기반 Projection
+    */
+    List<UserNameOnlyDto>findProjection2ByUserName(String username);
+
+    /**
+     * 동적 Projection
+     * 다음과 같이 GenericType 을 주면, 동적으로 프로잭션 데아터 변경 가능
+     */
+    <T> List<T>findProjection3ByUserName(String username, Class<T> type);
+
+    /**
+     * 네이티브 쿼리
+     * 가급적 네이티브 쿼리는 사용하지 않는게 좋다, 정말 어쩔 수 없을 때 사용
+     * 반환타입
+     *  - Object[]
+     *  - Tuple
+     *  - DTO(스프링 데이터 인터페이스 Projection 지원)
+     * 제약
+     *  - Sort 파라미터를 통한 정렬이 정상 동작하지 않을 수 있음 (믿지 말고 직접 처리)
+     *  - JPQL 처럼 애플리케이션 로딩 시점에 문법 확인 불가
+     *  - 동적 쿼리 불가
+     */
+    @Query(value = "select * from member where user_name = ?", nativeQuery = true)
+    Member findByNativeQuery(String username);
+
+    /**
+     * Projections 활용
+     * 스프링 데이터 JPA 네이티브 쿼리 + 인터페이스 기반 Projections 활용
+     * 페이징 가능
+     */
+    @Query(value = "select m.member_id as id, m.user_name as userName, t.team_name as teamName " +
+            "from member m left join team t ON m.team_id = t.team_id",
+            countQuery = "select count(*) from member",
+            nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }
