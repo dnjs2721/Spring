@@ -17,7 +17,6 @@ public class Team {
     private String name;
 
     @OneToMany(mappedBy = "team")
-    @ToString.Exclude
     private List<Member> members = new ArrayList<>();
 
     public Team(String name) {

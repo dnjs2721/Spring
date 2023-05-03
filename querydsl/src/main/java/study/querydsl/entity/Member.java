@@ -16,8 +16,11 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
-    @ToString.Exclude
     private Team team;
+
+    public Member(String username) {
+        this(username, 0);
+    }
 
     public Member(String username, int age) {
         this(username, age, null);
