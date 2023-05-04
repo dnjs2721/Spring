@@ -215,8 +215,7 @@ public class QuerydslBasicTest {
 
     /**
      * fetchResults(), fetchCount() 대신
-     * fetch() 를 사용
-     */
+     * fetch() 를 사용 */
     public Page<Member> paging(Pageable pageable) {
         List<Member> content = queryFactory
                 .selectFrom(member)
