@@ -899,6 +899,12 @@ public class QuerydslBasicTest {
             System.out.println("s = " + s);
         }
     }
+    /**
+     * 순수 JPA 와 Querydsl
+     *  - 순수 JPA 리포지토리와 Querydsl
+     *  - 동적쿼리 Builder 적용
+     *  - 동적쿼리 Where 적용
+     *  - 조회 API 컨트롤러 개발
+     */
 
-    
 }
